@@ -274,9 +274,9 @@ export function ChatInput({ onSendMessage, isLoading, mode, message, setMessage,
         },
         body: JSON.stringify({
           "model": "google/gemini-2.0-flash-001",
-          "messages": [
-						{"role": "system", "content": "Optimize user prompts for clearer AI processing and output only the refined prompt, make sure the prompt is as detailed as possible"},
-            {"role": "user", "content": message}
+    "messages": [
+      {"role": "system", "content": "Optimize user prompts for clearer AI processing and output only the refined prompt"},
+      {"role": "user", "content": message}
           ],
           "top_p": 1,
           "temperature": 0.7,
@@ -284,6 +284,7 @@ export function ChatInput({ onSendMessage, isLoading, mode, message, setMessage,
         })
       });
 
+			
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -548,35 +549,47 @@ export function ChatInput({ onSendMessage, isLoading, mode, message, setMessage,
             />
           </div>
 
-          {/* Optimize Button */}
-          {isTyping && (
-            <button
-              type="button"
-              onClick={handleOptimize}
-              disabled={isOptimizeLoading}
-              className="p-2 rounded-full hover:bg-blue-600 transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed bg-blue-500 text-white"
-            >
-              {isOptimizeLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Wand2 className="w-4 h-4" />
-              )}
-            </button>
-          )}
+        {isTyping && (
+  <button
+    type="button"
+    onClick={handleOptimize}
+    disabled={isOptimizeLoading}
+    className="p-2 rounded-full hover:bg-violet-600 transition-all duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed bg-violet-500 text-white group relative"
+  >
+    {isOptimizeLoading ? (
+      <Loader2 className="w-4 h-4 animate-spin" />
+    ) : (
+      <>
+        <Wand2 className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+        {/* Tooltip */}
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-sm text-gray-200 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+          Optimize Prompt
+        </div>
+      </>
+    )}
+  </button>
+)}
 
-          {/* Send Button */}
-          <button
-            type="submit"
-            disabled={(!message.trim() && !uploads.some(u => u.url) && !fileUploads.files.some(f => f.url) && !youtubeUrl) || isUploading || isLoading || !tokens || Number(tokens) <= 0}
-            className="bg-violet-500 text-white px-4 py-2 rounded-full hover:bg-violet-600 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Send className="w-4 h-4" />
-            )}
-            <span>Send</span>
-          </button>
+{/* Send Button */}
+<button
+  type="submit"
+  disabled={(!message.trim() && !uploads.some(u => u.url) && !fileUploads.files.some(f => f.url) && !youtubeUrl) || isUploading || isLoading || !tokens || Number(tokens) <= 0}
+  className="bg-violet-500 text-white px-4 py-2 rounded-full hover:bg-violet-600 transition-all duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group relative"
+>
+  {isLoading ? (
+    <Loader2 className="w-4 h-4 animate-spin" />
+  ) : (
+    <>
+      <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+      <span>Send</span>
+      {/* Tooltip */}
+      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-sm text-gray-200 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+        Send Message
+      </div>
+    </>
+  )}
+</button>
+
         </div>
 
         {/* Prompt Search */}
