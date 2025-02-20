@@ -1,0 +1,27 @@
+.katex .frac-line {
+  position: relative;
+}
+
+.katex .frac-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background-color: currentColor;
+  transform: translateY(-50%);
+}
+
+/* Prevent slider appearance under fractions */
+.katex .frac-line input[type="range"] {
+  display: none !important;
+}
+
+.katex .frac > .frac-line + * {
+  margin-top: 0.5em;
+}
+
+.katex .frac > .frac-line ~ * {
+  margin-bottom: 0.5em;
+}
